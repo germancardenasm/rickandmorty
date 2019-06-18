@@ -40,7 +40,7 @@ nav ul li{
 }
 .characters-home{
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   width: 90%;
   flex: 1;
   justify-content: center;
@@ -53,8 +53,8 @@ nav ul li{
   border-radius: 4px;
   text-align: center;
   margin:1rem;
-  width: 80%;
-  max-width: 290px;
+  width: 100%;
+  max-width: 200px;
 }
 .character-container img{
   max-width: 100%;
@@ -124,7 +124,6 @@ nav ul li{
 
   .characters-home{
     flex-direction: row;
-  
   }
 
 }
