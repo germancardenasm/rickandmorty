@@ -1,37 +1,42 @@
+html, body{
+  height: 100%;
+}
 body{
   position: relative;
   width: 100%;
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
-  height: 100%;
 }
 
+.main-container{
+  position: relative;
+  min-height: 100%;
+  margin: 0 auto;
+}
+.header{
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.header p{
+  font-size: 20px;
+}
+.header .blockquote{
+  font-size: 1rem;
+  color: rgb(90, 90, 90);
+  max-width: 800px;
+  margin: 0 auto;
+}
 .navbar{
   font-size: 1rem;
 }
 .navbar img{
-  width=50%
+  width: 50%;
 }
-
 nav ul li{
   list-style: none;
   text-indent: 0;
   display: inline-block;
   margin-right: 1rem;
-}
-
-.line-down{
-  position: relative;
-}
-
-.line-down::after{
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 1px;
-  background: radial-gradient(ellipse at left, rgba(197, 202, 213, 1) 0%, rgba(255, 255, 255, 0) 70%);
 }
 .characters-home{
   display: flex;
@@ -42,7 +47,6 @@ nav ul li{
   align-items: center;
   margin: 0 auto;
 }
-
 .character-container{
   position: relative;
   overflow: hidden;
@@ -52,12 +56,10 @@ nav ul li{
   width: 80%;
   max-width: 290px;
 }
-
 .character-container img{
   max-width: 100%;
 
 }
-
 .character-container .name-container{
   position: absolute;
   width: 100%;
@@ -71,12 +73,34 @@ nav ul li{
   font-weight: 800;
   color: black;
 }
-
 .character-container .name-container h4{
   font-family: 'Roboto', sans-serif;
   font-weight: 800;
   font-size: 1.4rem;
   margin: 0;
+}
+
+.main-container .jumbotron {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.main-container .jumbotron p{
+  margin: 0;
+}
+
+.main-container .footer{
+  position:absolute;
+   bottom:0;
+   width:100%;
+   height:80px;   /* Height of the footer */
+   background:#6cf;
+}
+
+.display-3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: 'Montserrat';
 }
 
 .display-4 {
@@ -88,9 +112,11 @@ nav ul li{
 }
 
 @media (min-width: 576px){
+  .display-3 {
+    font-size: 3.5rem;
+  }
   .jumbotron {
-      padding: 1rem 1rem;
-      
+      padding: 0;
   }
 }
 

@@ -15,47 +15,56 @@
   <link rel='shortcut icon' href='./favicon.ico'>
 </head>
 <body>
-  
-   
-      <nav class="navbar navbar-expand-md navbar-light bg-light mb-4">
-          <a class="navbar-brand" href="#">
-            <img src="./img/logoSmall.png"   class="d-inline-block align-top" alt="">
-          </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Personajes</a>
-                </li>
-                
-              </ul>
-            </div>
-      </nav>
-
-        
-
-  <div class="container-fluid">
-    <div class='row mb-5 px-5'>
-      <div class='characters-home' id='characters-home-div'></div>
-    </div>
-
-    <div class="jumbotron mx-auto ">
-      <h1 class="display-4">Hello, Rick & Morty Fan!</h1>
-      <p class="lead">If you want to view more characters, just click the button.</p>
-      <hr class="my-4">
-      <div class="text-right">
-          <a class="btn btn-primary btn-lg " href="#" role="button">See All</a>
+  <div class = 'main-container'>
+    <nav class="navbar navbar-expand-md navbar-light bg-light mb-4">
+      <a class="navbar-brand" href="#">
+        <img src="./img/logoSmall.png"   class="d-inline-block align-top" alt="">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Personajes</a>
+          </li>
+          
+        </ul>
       </div>
+    </nav>
+    <header class="header text-center">
+      <h1 class="display-3"> Rick and Morty House</h1>
+      <blockquote class="blockquote px-5 mt-4  text-left">
+          <p class="mb-0">““So what if he’s the Devil, Rick? 
+            At least the Devil has a job. At least he’s active 
+            in the community.””.</p>
+          <footer class="blockquote-footer  text-right">Summer </footer>
+        </blockquote>
+      <p></p>
+    </header>
+    <main>
+    <div class="container-fluid">
+      <div class='row mb-5 px-5'>
+        <div class='characters-home' id='characters-home-div'></div>
+      </div>
+    </main>
 
-    </div>
+    <section id='showAllSection'>
+      <div class="px-3 py-4 mx-auto d-flex justify-content-around align-content-end flex-wrap"> 
+        <p class="lead align-middle">Just click the button to see the rest of the family.</p>
+        <a id='button-showAll' class="btn btn-primary btn-lg" href="#" role="button">See All</a>
+      </div>
+    </section>
 
-   
+    <footer>
+    </footer>
+
+
   </div>
+
   <script src="./js/script.js"></script>
 </body>
 </html>
