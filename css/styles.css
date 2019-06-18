@@ -1,0 +1,104 @@
+body{
+  position: relative;
+  width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  height: 100%;
+}
+
+.navbar{
+  font-size: 1rem;
+}
+.navbar img{
+  width=50%
+}
+
+nav ul li{
+  list-style: none;
+  text-indent: 0;
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.line-down{
+  position: relative;
+}
+
+.line-down::after{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: radial-gradient(ellipse at left, rgba(197, 202, 213, 1) 0%, rgba(255, 255, 255, 0) 70%);
+}
+.characters-home{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.character-container{
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  text-align: center;
+  margin:1rem;
+  width: 80%;
+  max-width: 290px;
+}
+
+.character-container img{
+  max-width: 100%;
+
+}
+
+.character-container .name-container{
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  height: 50px;
+  line-height: 50px;
+  background: lightgrey;
+  opacity: 0.8;
+  font-family: 'Roboto';
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: black;
+}
+
+.character-container .name-container h4{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.display-4 {
+  font-size: 2rem;
+}
+
+.lead {
+  font-size: 1rem;
+}
+
+@media (min-width: 576px){
+  .jumbotron {
+      padding: 1rem 1rem;
+      
+  }
+}
+
+@media only screen and (min-width: 740px) {
+
+  .characters-home{
+    flex-direction: row;
+  
+  }
+
+}
