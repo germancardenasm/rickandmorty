@@ -1,4 +1,3 @@
-console.log("init request");
 const QTY_HOME_CHARACTERS = 3;
 let TOTAL_CHARACTERS = 0;
 let TOTAL_PAGES = 0;
@@ -135,60 +134,48 @@ function addPaginatorPageButton(i, paginatorList) {
   anchor.classList.add("page-link-num");
   anchor.innerHTML = i;
   li.appendChild(anchor);
-  li.addEventListener("click", goToPage);
+  li.addEventListener("click", changePage);
   paginatorList.appendChild(li);
 }
 
-function goToPage(e) {
-  let apiInfo = {};
-  const buttonPressed = e.target.innerHTML;
-  let paginatorList = document.getElementById("paginator-list");
-  previosActivePaginatorPage=activePaginatorPage;
-
-  apiInfo = getCharacter(charactersUrl, `?page=${buttonPressed}`);
-  activePaginatorPage=parseInt(buttonPressed);
-  
-  apiInfo.then(receivedData => {
-    console.log(receivedData);
-    removeAllCharacters();
-    nextPage = receivedData.info.next;
-    prevPage = receivedData.info.prev;
-    renderCharactersContainers(receivedData.results.length);
-    renderCharacters(receivedData.results);
-  });
-  
-  setPaginatorActiveButton();
-}
 
 function changePage(e) {
+  const buttonPressed = e.target.innerHTML;
   let apiInfo = {};
-  const buttonPressed = e.target.parentElement.id;
-  let paginatorList = document.getElementById("paginator-list");
-  previosActivePaginatorPage=activePaginatorPage;
 
-  if (buttonPressed === "next" && nextPage) {
+  if (
+    (buttonPressed === "Next" && !nextPage) ||
+    (buttonPressed === "Previous" && !prevPage)
+  )
+    return;
+
+  previosActivePaginatorPage = activePaginatorPage;
+
+  if (buttonPressed === "Next") {
     apiInfo = getCharacter(nextPage);
     activePaginatorPage++;
-  } else if (buttonPressed === "previous" && prevPage) {
+  } else if (buttonPressed === "Previous") {
     apiInfo = getCharacter(prevPage);
     activePaginatorPage--;
-  }else{
-    return;
+  } else {
+    apiInfo = getCharacter(charactersUrl, `?page=${buttonPressed}`);
+    activePaginatorPage = parseInt(buttonPressed);
   }
+  renderPage(apiInfo);
+  setPaginatorActiveButton();
+}
 
-  apiInfo.then(receivedData => {
+function renderPage(promise) {
+  promise.then(receivedData => {
     console.log(receivedData);
     removeAllCharacters();
     nextPage = receivedData.info.next;
     prevPage = receivedData.info.prev;
     renderCharactersContainers(receivedData.results.length);
     renderCharacters(receivedData.results);
+    window.scrollTo(0, 256);
   });
-  
-  setPaginatorActiveButton();
 }
-
-
 
 function setPaginatorActiveButton() {
   let paginatorList = document.getElementById("paginator-list");
