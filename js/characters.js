@@ -1,6 +1,7 @@
 const QTY_HOME_CHARACTERS = 3;
 let TOTAL_CHARACTERS = 0;
 let TOTAL_PAGES = 0;
+const CHARACTERS_PER_PAGE=20;
 let nextPage = "";
 let prevPage = "";
 let activePaginatorPage = 1;
@@ -14,25 +15,28 @@ const previous = document.getElementById("next");
 const charactersUrl = "https://rickandmortyapi.com/api/character/";
 
 bootstrap();
-renderCharactersContainers();
-const homeCharacters = getRandomCharacters(QTY_HOME_CHARACTERS);
-Promise.all(homeCharacters).then(data => renderCharacters(data));
-
-function addEventListeners() {
-  showAllButton.addEventListener("click", showAllCharacters);
-  next.addEventListener("click", changePage);
-  previous.addEventListener("click", changePage);
-}
 
 function bootstrap() {
+  renderCharactersContainers(20);
   const apiInfo = getCharacter(charactersUrl);
-  apiInfo.then(data => {
-    TOTAL_CHARACTERS = data.info.count;
-    TOTAL_PAGES = data.info.pages;
-
+  apiInfo.then( receivedData => {
+    TOTAL_CHARACTERS = receivedData.info.count;
+    TOTAL_PAGES = receivedData.info.pages;
+    if(CHARACTERS_PER_PAGE != receivedData.results.length){
+      removeAllCharacters();
+      renderCharactersContainers(receivedData.results.length);
+    } 
+    renderCharacters(receivedData.results)
+    nextPage = receivedData.info.next;
+    prevPage = receivedData.info.prev;
     setUpPaginator();
   });
   addEventListeners();
+}
+
+function addEventListeners() {
+  next.addEventListener("click", changePage);
+  previous.addEventListener("click", changePage);
 }
 
 function renderCharactersContainers(qtyOfCharacters = QTY_HOME_CHARACTERS) {
@@ -41,6 +45,7 @@ function renderCharactersContainers(qtyOfCharacters = QTY_HOME_CHARACTERS) {
     const nameContainer = document.createElement("div");
     const img = document.createElement("img");
     const name = document.createElement("h4");
+    container.setAttribute("id", 1);
     container.classList.add("character-container");
     container.classList.add("character-name");
     nameContainer.classList.add("name-container");
@@ -49,38 +54,24 @@ function renderCharactersContainers(qtyOfCharacters = QTY_HOME_CHARACTERS) {
     img.alt = "dummy image";
     container.appendChild(img);
     container.append(nameContainer);
+    container.addEventListener('click', getCharacterDetail);
     charactersHomeContainer.appendChild(container);
   }
+}
+
+function getCharacterDetail(e){
+  sessionStorage.setItem('characterDetail', e.target.parentElement.id);
+  window.location.href = "./detail.html";
 }
 
 function renderCharacters(charactersArray) {
   charactersArray.forEach((element, index) => {
     const container = charactersHomeContainer.children[index];
+    container.setAttribute("id", element.id);
     container.children[0].src = element.image;
     container.children[0].alt = element.name + " image";
     container.children[1].innerHTML = element.name;
   });
-}
-
-function hideSection(sectionToHide) {
-  document.getElementById(sectionToHide).classList.add("d-none");
-}
-
-function showSection(sectionToShow) {
-  document.getElementById(sectionToShow).classList.remove("d-none");
-}
-
-function getRandomCharacters(qtyOfCharacter) {
-  let promises = [];
-  let url = "https://rickandmortyapi.com/api/character/";
-  for (let i = 0; i < qtyOfCharacter; i++) {
-    promises.push(getCharacter(url, randomNumber(493)));
-  }
-  return promises;
-}
-
-function randomNumber(maxLimit) {
-  return Math.floor(Math.random() * maxLimit) + 1;
 }
 
 function getCharacter(url, characterId = "") {
@@ -93,19 +84,6 @@ function getCharacter(url, characterId = "") {
     });
 }
 
-function showAllCharacters(event) {
-  event.preventDefault();
-  const requestCharactersList = getCharacter(charactersUrl);
-  requestCharactersList.then(receivedData => {
-    removeAllCharacters();
-    renderCharactersContainers(receivedData.results.length);
-    renderCharacters(receivedData.results);
-    nextPage = receivedData.info.next;
-    prevPage = receivedData.info.prev;
-  });
-  hideSection("showAllSection");
-  showSection("pagination");
-}
 
 function removeAllCharacters() {
   var myNode = document.getElementById("characters-home-div");
@@ -167,13 +145,16 @@ function changePage(e) {
 
 function renderPage(promise) {
   promise.then(receivedData => {
-    console.log(receivedData);
-    removeAllCharacters();
+    const qtyOfCharactersReceived = receivedData.results.length;
+    const qtyCharacterOnScreen = charactersHomeContainer.childElementCount;
+    if(qtyCharacterOnScreen != qtyOfCharactersReceived){
+      removeAllCharacters();
+      renderCharactersContainers(receivedData.results.length);
+    } 
     nextPage = receivedData.info.next;
     prevPage = receivedData.info.prev;
-    renderCharactersContainers(receivedData.results.length);
     renderCharacters(receivedData.results);
-    window.scrollTo(0, 256);
+    window.scrollTo(0, 0);
   });
 }
 

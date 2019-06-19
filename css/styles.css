@@ -7,7 +7,6 @@ body{
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
 }
-
 .main-container{
   position: relative;
   min-height: 100%;
@@ -17,20 +16,29 @@ body{
   max-width: 1200px;
   margin: 0 auto;
 }
-.header p{
-  font-size: 16px;
+
+.display-3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: 'Montserrat';
+  color: #01b6cd;
 }
+
 .header .blockquote{
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: rgb(90, 90, 90);
   max-width: 800px;
   margin: 0 auto;
 }
+
+.header .blockquote p{
+  text-align: justify;
+}
 .navbar{
   font-size: 1rem;
 }
-.navbar img{
-  width: 50%;
+.navbar .navbar-brand img{
+  width: 85px;
 }
 nav ul li{
   list-style: none;
@@ -40,7 +48,7 @@ nav ul li{
 }
 .characters-home{
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   width: 90%;
   flex: 1;
   justify-content: center;
@@ -58,7 +66,6 @@ nav ul li{
 }
 .character-container img{
   max-width: 100%;
-
 }
 .character-container .name-container{
   position: absolute;
@@ -73,7 +80,45 @@ nav ul li{
   font-weight: 800;
   color: black;
 }
+.characters-home .detail-container{
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  border-radius: 5px;
+  width: 550px;
+  padding: 1rem;
+}
 
+.characters-home .detail-container .character-info{
+  height: 200px;
+}
+
+.characters-home .detail-container .table{
+  color: white;
+  padding-top: 1rem;
+  width: 200px;
+}
+
+.characters-home .detail-container .table td{
+  border: none;
+  padding: 0.5rem;
+}
+
+.characters-home .detail-container .table .table-label{
+  font-weight: bold;
+  color: #01b6cd;
+  width: 80px;
+  padding-left: 0.25rem;
+}
+
+.characters-home .detail-container .character-name-detail{
+  color: white;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
 
 .main-container .jumbotron {
   width: 100%;
@@ -92,12 +137,7 @@ nav ul li{
   width: 35px;
 }
 
-.display-3 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  font-family: 'Montserrat';
-  color: #01b6cd;
-}
+
 
 .display-4 {
   font-size: 2rem;
@@ -109,7 +149,13 @@ nav ul li{
 
 @media (min-width: 576px){
   .display-3 {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
+  }
+  .characters-home{
+    flex-direction: row;
+  }
+  .characters-home .detail-container{
+    margin-top: 2rem;
   }
   .jumbotron {
       padding: 0;
@@ -117,7 +163,9 @@ nav ul li{
 }
 
 @media only screen and (min-width: 740px) {
-
+  .display-3 {
+    font-size: 3.5rem;
+  }
   .characters-home{
     flex-direction: row;
   }
