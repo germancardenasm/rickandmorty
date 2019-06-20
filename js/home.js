@@ -40,6 +40,9 @@ function addEventListeners() {
   showAllButton.addEventListener("click", showAllCharacters);
   next.addEventListener("click", changePage);
   previous.addEventListener("click", changePage);
+  window.addEventListener('hashchange', function() {
+    console.log('The hash has changed!')
+  }, false);
 }
 
 function renderCharactersContainers(
