@@ -12,28 +12,7 @@ body{
   min-height: 100%;
   margin: 0 auto;
 }
-.header{
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
-.display-3 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  font-family: 'Montserrat';
-  color: #01b6cd;
-}
-
-.header .blockquote{
-  font-size: 0.9rem;
-  color: rgb(90, 90, 90);
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.header .blockquote p{
-  text-align: justify;
-}
 .navbar{
   font-size: 1rem;
 }
@@ -46,20 +25,52 @@ nav ul li{
   display: inline-block;
   margin-right: 1rem;
 }
-.characters-home{
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
+
+.header{
+  max-width: 1200px;
   margin: 0 auto;
 }
+.display-3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: 'Montserrat';
+  color: #01b6cd;
+}
+.header .blockquote{
+  font-size: 0.9rem;
+  color: rgb(90, 90, 90);
+  max-width: 800px;
+  margin: 0 auto;
+}
+.header .blockquote p{
+  text-align: justify;
+}
+.page-title{
+  margin-left: 10%;
+  color: #01b6cd;
+}
 
-.characters{
+
+.line-down{
+  position: relative;
+}
+
+.line-down::after{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: radial-gradient(ellipse at left, rgba(197, 202, 213, 0.7) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.characters-home{
   display: flex;
-  flex-wrap: wrap
+  flex-wrap: wrap;
   width: 90%;
+  max-width: 800px;
+  flex: 1;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
@@ -72,7 +83,7 @@ nav ul li{
   text-align: center;
   margin:1rem;
   width: 100%;
-  max-width: 200px;
+  max-width: 135px;
 }
 .character-container img{
   max-width: 100%;
@@ -86,7 +97,7 @@ nav ul li{
   background: lightgrey;
   opacity: 0.7;
   font-family: 'Roboto';
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   font-weight: 800;
   color: black;
 }
@@ -130,13 +141,10 @@ nav ul li{
   text-transform: uppercase;
 }
 
-.main-container .jumbotron {
-  width: 100%;
-  margin-bottom: 0;
-}
-
-.main-container .jumbotron p{
-  margin: 0;
+.show-all-section{
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .page-item{
@@ -163,6 +171,7 @@ nav ul li{
   }
   .characters-home{
     flex-direction: row;
+    flex-wrap: nowrap;
   }
   .characters-home .detail-container{
     margin-top: 2rem;

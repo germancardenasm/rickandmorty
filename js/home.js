@@ -1,39 +1,68 @@
 const QTY_HOME_CHARACTERS = 3;
-const charactersHomeContainer = document.getElementById("characters-home-div");
-const charactersUrl = "https://rickandmortyapi.com/api/character/";
 
+const charactersUrl = "https://rickandmortyapi.com/api/character/";
+let TOTAL_CHARACTERS = 0;
+let TOTAL_PAGES = 0;
+let nextPage = ""
+let prevPage = "";
+let activePaginatorPage = 1;
+let previosActivePaginatorPage = 1;
+const showAllSection = document.getElementById("showAllSection");
+const showAllButton = document.getElementById("button-showAll");
+const homePage = document.getElementById("home-page");
+const characters = document.getElementById("characterPage");
+const charactersContainerPage = document.getElementById("characters-container-page");
+const charactersPageTitle = document.getElementById("characters-page-title");
+const pagination = document.getElementById("pagination");
+const next = document.getElementById("previous");
+const previous = document.getElementById("next");
+
+bootstrap();
 renderCharactersContainers();
 getHomeCharacters();
 
-function renderCharactersContainers(qtyOfCharacters = QTY_HOME_CHARACTERS) {
+function bootstrap() {
+  const apiInfo = getCharacter(charactersUrl);
+  apiInfo.then(data => {
+    TOTAL_CHARACTERS = data.info.count;
+    TOTAL_PAGES = data.info.pages;
+  });
+  addEventListeners();
+}
+
+function addEventListeners() {
+  showAllButton.addEventListener("click", showAllCharacters);
+  next.addEventListener("click", changePage);
+  previous.addEventListener("click", changePage);
+}
+
+function renderCharactersContainers(qtyOfCharacters = QTY_HOME_CHARACTERS, sectionContainer='home-page') {
   for (let i = 0; i < qtyOfCharacters; i++) {
+    const page = document.getElementById(sectionContainer);
     const container = document.createElement("div");
-    const nameContainer = document.createElement("div");
-    const img = document.createElement("img");
-    const name = document.createElement("h4");
+    container.setAttribute("id", i);
     container.classList.add("character-container");
-    container.classList.add("character-name");
-    nameContainer.classList.add("name-container");
-    nameContainer.appendChild(name);
+    const img = document.createElement("img");
     img.src = "./img/dummyImg.png";
     img.alt = "dummy image";
     container.appendChild(img);
+    const nameContainer = document.createElement("div");
+    nameContainer.classList.add("name-container");
+    const name = document.createElement("h4");
+    name.classList.add("character-name");
+    nameContainer.appendChild(name);
     container.append(nameContainer);
-    charactersHomeContainer.appendChild(container);
+    container.addEventListener('click', getCharacterDetail);
+    page.appendChild(container);
   }
 }
 
 function getHomeCharacters(){
   const homeCharacters = getRandomCharacters(QTY_HOME_CHARACTERS);
-  Promise.all(homeCharacters).then(data => renderCharacters(data));
-}
-
-function renderCharacters(charactersArray) {
-  charactersArray.forEach((element, index) => {
-    const container = charactersHomeContainer.children[index];
-    container.children[0].src = element.image;
-    container.children[0].alt = element.name + " image";
-    container.children[1].innerHTML = element.name;
+  Promise.all(homeCharacters).then(receivedData => {
+    const formatedDataForRender = {results: receivedData,}
+    let promise = Promise.resolve(formatedDataForRender);
+    renderPageWhendataAvailable(promise, 'home-page');
   });
 }
 
@@ -50,6 +79,42 @@ function randomNumber(maxLimit) {
   return Math.floor(Math.random() * maxLimit) + 1;
 }
 
+function renderCharacters(charactersArray, sectionContainer='home-page') {
+  charactersArray.forEach((element, index) => {
+    const container = document.getElementById(sectionContainer).children[index];
+    container.children[0].src = element.image;
+    container.children[0].alt = element.name + " image";
+    container.children[1].innerHTML = element.name;
+  });
+}
+
+function hideSection(sectionToHide) {
+  document.getElementById(sectionToHide).classList.add("d-none");
+}
+
+function showSection(sectionToShow) {
+  document.getElementById(sectionToShow).classList.remove("d-none");
+}
+
+function getCharacterDetail(e){
+  sessionStorage.setItem('characterDetail', e.target.parentElement.id);
+  window.location.href = "./detail.html";
+}
+
+function showAllCharacters(event) {
+  event.preventDefault();
+  const requestCharactersList = getCharacter(charactersUrl);
+  setUpPaginator();
+  hideSection('header');
+  hideSection('home-page');
+  hideSection('showAllSection');
+  renderCharactersContainers(20, 'characters-container-page');
+  renderPageWhendataAvailable(requestCharactersList);
+  charactersContainerPage.classList.add('d-flex');
+  charactersContainerPage.classList.add('flex-wrap');
+  showSection('characters-page')
+}
+
 function getCharacter(url, characterId = "") {
   return fetch(url + characterId)
     .then(function(response) {
@@ -60,11 +125,92 @@ function getCharacter(url, characterId = "") {
     });
 }
 
-function removeAllCharacters() {
-  var myNode = document.getElementById("characters-home-div");
+function removeAllCharacters(section='home-page') {
+  var myNode = document.getElementById(section);
   while (myNode.firstChild) {
     myNode.removeChild(myNode.firstChild);
   }
+}
+
+function setUpPaginator() {
+  const PREVIUOS_BUTTON = 1;
+  const FIST_PAGE_BUTTON = 2;
+  let paginatorList = document.getElementById("paginator-list");
+  for (let i = 1; i <= TOTAL_PAGES; i++) {
+    addPaginatorPageButton(i, paginatorList);
+  }
+  let li = paginatorList.getElementsByTagName("li");
+  li[FIST_PAGE_BUTTON].classList.add("active");
+  paginatorList.appendChild(li[PREVIUOS_BUTTON]);
+}
+
+function addPaginatorPageButton(i, paginatorList) {
+  let li = document.createElement("li");
+  let anchor = document.createElement("a");
+  li.classList.add("page-item");
+  anchor.classList.add("page-link");
+  anchor.classList.add("page-link-num");
+  anchor.innerHTML = i;
+  li.appendChild(anchor);
+  li.addEventListener("click", changePage);
+  paginatorList.appendChild(li);
+}
+
+
+function changePage(e) {
+  const buttonPressed = e.target.innerHTML;
+  let apiInfo = {};
+
+  if (
+    (buttonPressed === "Next" && !nextPage) ||
+    (buttonPressed === "Previous" && !prevPage)
+  )
+    return;
+
+  previosActivePaginatorPage = activePaginatorPage;
+
+  if (buttonPressed === "Next") {
+    apiInfo = getCharacter(nextPage);
+    activePaginatorPage++;
+  } else if (buttonPressed === "Previous") {
+    apiInfo = getCharacter(prevPage);
+    activePaginatorPage--;
+  } else {
+    apiInfo = getCharacter(charactersUrl, `?page=${buttonPressed}`);
+    activePaginatorPage = parseInt(buttonPressed);
+  }
+  renderPageWhendataAvailable(apiInfo);
+  setPaginatorActiveButton();
+}
+
+function renderPageWhendataAvailable(promise, section='characters-container-page') {
+  const container = document.getElementById(section);
+  promise.then(receivedData => {
+    const qtyOfCharactersReceived = receivedData.results.length;
+    const qtyCharacterOnScreen = container.childElementCount;
+    if(qtyCharacterOnScreen != qtyOfCharactersReceived){
+      removeAllCharacters(section);
+      renderCharactersContainers(receivedData.results.length, section);
+    } 
+    if(receivedData.info){
+      nextPage = receivedData.info.next; 
+      prevPage = receivedData.info.prev;
+    }
+
+    renderCharacters(receivedData.results, section);
+    window.scrollTo(0, 0);
+  });
+}
+
+function setPaginatorActiveButton() {
+  let paginatorList = document.getElementById("paginator-list");
+  let li = paginatorList.getElementsByTagName("li");
+  li[previosActivePaginatorPage].classList.remove("active");
+  li[activePaginatorPage].classList.add("active");
+}
+
+function saveCharacters(serverInfo= {}){
+  sessionStorage.setItem('serverInfo', serverInfo);
 }
 
 
