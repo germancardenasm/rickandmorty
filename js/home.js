@@ -18,8 +18,7 @@ const next = document.getElementById("previous");
 const previous = document.getElementById("next");
 
 bootstrap();
-renderCharactersContainers();
-getHomeCharacters();
+renderHome();   
 
 function bootstrap() {
   const apiInfo = getCharacter(charactersUrl);
@@ -29,6 +28,13 @@ function bootstrap() {
   });
   addEventListeners();
 }
+
+
+function renderHome(){
+  renderCharactersContainers();
+  getHomeCharacters();
+}
+
 
 function addEventListeners() {
   showAllButton.addEventListener("click", showAllCharacters);
@@ -79,14 +85,6 @@ function randomNumber(maxLimit) {
   return Math.floor(Math.random() * maxLimit) + 1;
 }
 
-function renderCharacters(charactersArray, sectionContainer='home-page') {
-  charactersArray.forEach((element, index) => {
-    const container = document.getElementById(sectionContainer).children[index];
-    container.children[0].src = element.image;
-    container.children[0].alt = element.name + " image";
-    container.children[1].innerHTML = element.name;
-  });
-}
 
 function hideSection(sectionToHide) {
   document.getElementById(sectionToHide).classList.add("d-none");
@@ -201,6 +199,17 @@ function renderPageWhendataAvailable(promise, section='characters-container-page
     window.scrollTo(0, 0);
   });
 }
+
+function renderCharacters(charactersArray, sectionContainer='home-page') {
+  charactersArray.forEach((element, index) => {
+    const container = document.getElementById(sectionContainer).children[index];
+    container.setAttribute('id', element.id);
+    container.children[0].src = element.image;
+    container.children[0].alt = element.name + " image";
+    container.children[1].innerHTML = element.name;
+  });
+}
+
 
 function setPaginatorActiveButton() {
   let paginatorList = document.getElementById("paginator-list");
