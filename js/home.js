@@ -221,6 +221,7 @@ function saveCharacters(serverInfo = {}) {
 }
 
 function getCharacterDetail(e) {
+  hideSection('header');
   hideSection('home-page');
   hideSection('characters-page');
   hideSection('showAllSection');

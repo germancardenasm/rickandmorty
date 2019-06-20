@@ -1,9 +1,11 @@
 html, body{
   height: 100%;
+  width: 100%;
+  min-width: 300px;
 }
 body{
   position: relative;
-  width: 100%;
+
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
 }
@@ -101,41 +103,59 @@ nav ul li{
   font-weight: 800;
   color: black;
 }
-.characters-home .detail-container{
+
+.characters-page{
+  max-width: 800px;
+  margin: 3rem auto;
+} 
+
+.detail-page{
+  margin-top: 3rem;
+}
+
+.detail-page .character-container{
+  max-width: 200px;
+}
+
+.detail-page .detail-container-page{
   position: relative;
+  margin: 2rem auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   background: black;
   border-radius: 5px;
-  width: 550px;
+  width: 80%;
+  max-width: 800px;
   padding: 1rem;
 }
 
-.characters-home .detail-container .character-info{
+.detail-page .detail-container-page .character-info{
   height: 200px;
+  color: white; 
 }
 
-.characters-home .detail-container .table{
-  color: white;
+.detail-page .detail-container-page .table{
   padding-top: 1rem;
   width: 200px;
+  color: white; 
 }
 
-.characters-home .detail-container .table td{
+.detail-page .detail-container-page .table td{
   border: none;
   padding: 0.5rem;
+ 
 }
 
-.characters-home .detail-container .table .table-label{
+.detail-page .detail-container-page .table .table-label{
   font-weight: bold;
   color: #01b6cd;
   width: 80px;
   padding-left: 0.25rem;
 }
 
-.characters-home .detail-container .character-name-detail{
+.detail-page .detail-container-page.character-name-detail{
   color: white;
   font-size: 1.1rem;
   text-transform: uppercase;
@@ -188,5 +208,11 @@ nav ul li{
   .characters-home{
     flex-direction: row;
   }
+
+  .characters-home .character-container{
+    width: 100%;
+    max-width: 100%;
+  }
+
 
 }
