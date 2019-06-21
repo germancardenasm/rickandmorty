@@ -3,7 +3,7 @@ const characters = {
 
     render : async () => {
       let view =  `
-          <div class="characters-page d-none" id='characters-page'>
+          <div class="characters-page" id='characters-page'>
               <div id='characters-page-title' class='page-title line-down'><h3 class='display-5'>Characters</h3>
               </div>
               <div class="characters-container-page d-flex justify-content-center" id='characters-container-page'>
@@ -20,7 +20,7 @@ const characters = {
     },
     after_render: async () => {
       
-          console.log('characters!')
+          renderCharactersPage();
          
       }
 }

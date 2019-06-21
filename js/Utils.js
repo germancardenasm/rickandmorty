@@ -1,17 +1,10 @@
 const Utils = { 
     // --------------------------------
-    //  Parse a url and break it into resource, id and verb
+    //  Parse a url and get the hash
     // --------------------------------
     parseRequestURL : () => {
-        let url = location.pathname.split('.html')[0].toLowerCase() || '/';
+        let url = location.hash.slice(1).toLowerCase().toLowerCase() || '/';
         return url
-    }
-
-    // --------------------------------
-    //  Simple sleep implementation
-    // --------------------------------
-    , sleep: (ms) => {
-        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }
 

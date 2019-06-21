@@ -18,7 +18,7 @@ const home = {
           <section id='showAllSection' class='show-all-section'>
               <div class="px-3 py-4 mx-auto d-flex justify-content-around align-content-end flex-wrap"> 
                 <p class="lead align-middle">Just click the button to see the rest of the family.</p>
-                <a id='button-showAll' class="btn btn-primary btn-lg" href="./characters.html" role="button">See All</a>
+                <a id='button-showAll' class="btn btn-primary btn-lg" href="/#/characters" role="button">See All</a>
               </div>
             </section>
         </div>
@@ -27,7 +27,7 @@ const home = {
     },
     after_render: async () => {
       
-          console.log('home!')
+          renderHome();
          
       }
 }

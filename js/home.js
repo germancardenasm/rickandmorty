@@ -1,45 +1,50 @@
 const QTY_HOME_CHARACTERS = 3;
-
 const charactersUrl = "https://rickandmortyapi.com/api/character/";
-let TOTAL_CHARACTERS = 0;
-let TOTAL_PAGES = 0;
 let nextPage = "";
 let prevPage = "";
 let activePaginatorPage = 1;
 let previosActivePaginatorPage = 1;
 const showAllSection = document.getElementById("showAllSection");
-const showAllButton = document.getElementById("button-showAll");
+
 const homePage = document.getElementById("home-page");
 const characters = document.getElementById("characterPage");
-const charactersContainerPage = document.getElementById(
-  "characters-container-page"
-);
+
 const charactersPageTitle = document.getElementById("characters-page-title");
 const pagination = document.getElementById("pagination");
 const next = document.getElementById("previous");
 const previous = document.getElementById("next");
 
-bootstrap();
-renderHome();
+initStorage();
 
-function bootstrap() {
-  const apiInfo = getCharacter(charactersUrl);
-  apiInfo.then(data => {
-    TOTAL_CHARACTERS = data.info.count;
-    TOTAL_PAGES = data.info.pages;
-  });
-  addEventListeners();
+function initStorage(){
+  if(storageIsInit()) return
+  getCharacter(charactersUrl).then((receivedData)=>{
+    const apiConf={
+      TOTAL_CHARACTERS:receivedData.info.count,
+      TOTAL_PAGES: receivedData.info.pages
+    }
+    sessionStorage.setItem('apiConf', JSON.stringify(apiConf));
+  })
+}
+
+function storageIsInit(){
+  return sessionStorage.getItem('apiConf')
+}
+
+function redirectToHome(){
+  location.hash = '/home';
+  console.log('redirects to home');
 }
 
 function renderHome() {
   renderCharactersContainers();
   getHomeCharacters();
+  addEventListenersHome();
 }
 
-function addEventListeners() {
+function addEventListenersHome() {
+  const showAllButton = document.getElementById("button-showAll");
   showAllButton.addEventListener("click", showAllCharacters);
-  next.addEventListener("click", changePage);
-  previous.addEventListener("click", changePage);
 }
 
 function renderCharactersContainers(
@@ -61,7 +66,7 @@ function renderCharactersContainers(
     name.classList.add("character-name");
     nameContainer.appendChild(name);
     container.append(nameContainer);
-    container.addEventListener("click", getCharacterDetail);
+    container.addEventListener("click", redirectToDetail);
     page.appendChild(container);
   }
 }
@@ -88,28 +93,6 @@ function randomNumber(maxLimit) {
   return Math.floor(Math.random() * maxLimit) + 1;
 }
 
-function hideSection(sectionToHide) {
-  document.getElementById(sectionToHide).classList.add("d-none");
-}
-
-function showSection(sectionToShow) {
-  document.getElementById(sectionToShow).classList.remove("d-none");
-}
-
-function showAllCharacters(event) {
-  event.preventDefault();
-  const requestCharactersList = getCharacter(charactersUrl);
-  setUpPaginator();
-  hideSection("header");
-  hideSection("home-page");
-  hideSection("showAllSection");
-  renderCharactersContainers(20, "characters-container-page");
-  renderPageWhendataAvailable(requestCharactersList);
-  charactersContainerPage.classList.add("d-flex");
-  charactersContainerPage.classList.add("flex-wrap");
-  showSection("characters-page");
-}
-
 function getCharacter(url, characterId = "") {
   return fetch(url + characterId)
     .then(function(response) {
@@ -118,6 +101,33 @@ function getCharacter(url, characterId = "") {
     .then(function(response) {
       return response;
     });
+}
+
+function showAllCharacters(event) {
+  if(!storageIsInit) initStorage()
+  location.hash = '/characters';
+}
+
+function renderCharactersPage(){
+  const charactersContainerPage = getById("characters-container-page");
+  const requestCharactersList = getCharacter(charactersUrl, `?page=${activePaginatorPage}`);
+  renderCharactersContainers(20, "characters-container-page");
+  renderPageWhendataAvailable(requestCharactersList);
+  setUpPaginator();
+  charactersContainerPage.classList.add("d-flex");
+  charactersContainerPage.classList.add("flex-wrap");
+  addEventListenersCharacters(); 
+}
+
+function addEventListenersCharacters() {
+  const nextButton = getById('next');
+  const previousButton = getById('previous');
+  nextButton.addEventListener("click", changePage);
+  previousButton.addEventListener("click", changePage);
+}
+
+function getById(id){
+  return document.getElementById(id);
 }
 
 function removeAllCharacters(section = "home-page") {
@@ -129,14 +139,16 @@ function removeAllCharacters(section = "home-page") {
 
 function setUpPaginator() {
   const PREVIUOS_BUTTON = 1;
-  const FIST_PAGE_BUTTON = 2;
-  let paginatorList = document.getElementById("paginator-list");
-  for (let i = 1; i <= TOTAL_PAGES; i++) {
+  let paginatorList = getById("paginator-list");
+  let numOfPages = sessionStorage.getItem('apiConf');
+  numOfPages = JSON.parse(numOfPages).TOTAL_PAGES;
+ 
+  for (let i = 1; i <= numOfPages; i++) {
     addPaginatorPageButton(i, paginatorList);
   }
   let li = paginatorList.getElementsByTagName("li");
-  li[FIST_PAGE_BUTTON].classList.add("active");
   paginatorList.appendChild(li[PREVIUOS_BUTTON]);
+  li[activePaginatorPage].classList.add("active");
 }
 
 function addPaginatorPageButton(i, paginatorList) {
@@ -152,6 +164,7 @@ function addPaginatorPageButton(i, paginatorList) {
 }
 
 function changePage(e) {
+  e.preventDefault();
   const buttonPressed = e.target.innerHTML;
   let apiInfo = {};
 
@@ -170,6 +183,7 @@ function changePage(e) {
     apiInfo = getCharacter(prevPage);
     activePaginatorPage--;
   } else {
+    activePaginatorPage = buttonPressed;
     apiInfo = getCharacter(charactersUrl, `?page=${buttonPressed}`);
     activePaginatorPage = parseInt(buttonPressed);
   }
@@ -185,6 +199,7 @@ function renderPageWhendataAvailable(
   promise.then(receivedData => {
     const qtyOfCharactersReceived = receivedData.results.length;
     const qtyCharacterOnScreen = container.childElementCount;
+    saveApiConfiguration(receivedData);
     if (qtyCharacterOnScreen != qtyOfCharactersReceived) {
       removeAllCharacters(section);
       renderCharactersContainers(receivedData.results.length, section);
@@ -197,6 +212,15 @@ function renderPageWhendataAvailable(
     window.scrollTo(0, 0);
     saveCharacters(receivedData.results);
     });
+}
+
+function saveApiConfiguration(receivedData){
+  if(receivedData.info === undefined) return;
+  const apiConf={
+    TOTAL_CHARACTERS:receivedData.info.count,
+    TOTAL_PAGES: receivedData.info.pages
+  }
+  sessionStorage.setItem('apiConf', JSON.stringify(apiConf));
 }
 
 function renderCharacters(charactersArray, sectionContainer = "home-page") {
@@ -220,21 +244,21 @@ function saveCharacters(serverInfo = {}) {
   sessionStorage.setItem("charactersObject", JSON.stringify(serverInfo));
 }
 
-function getCharacterDetail(e) {
-  hideSection('header');
-  hideSection('home-page');
-  hideSection('characters-page');
-  hideSection('showAllSection');
-  showSection('detail-page');
+function redirectToDetail(e) {
   const characterIdtoShowDetail = parseInt(e.target.parentElement.id);
-  let charactersList = JSON.parse(sessionStorage.getItem("charactersObject"));
-  let characterToRender = charactersList.filter( character => character.id == characterIdtoShowDetail);
-  renderCharacters(characterToRender, 'detail-container-page');
-  renderDetail(characterToRender[0]);
+  sessionStorage.setItem('idToShowDetail', characterIdtoShowDetail)
+  location.hash = '/detail';
 }
 
+async function renderDetail() {
+  const characterIdtoShowDetail = await parseInt(sessionStorage.getItem('idToShowDetail'));
+  let charactersList = await JSON.parse(sessionStorage.getItem("charactersObject"));
+  let characterToRender = charactersList.filter( character => character.id == characterIdtoShowDetail);
+  renderCharacters(characterToRender, 'detail-container-page');
+  renderCharacterDetail(characterToRender[0]);
+}
 
-function renderDetail(characterInfo){
+function renderCharacterDetail(characterInfo){
   const table = document.getElementById('character-info-table');
   const labels = ['status', 'species', 'gender', 'origin'];
   const characterName = document.getElementById('character-name-detail');
@@ -251,3 +275,4 @@ function renderDetail(characterInfo){
       cellCharacterInfo.innerHTML = characterInfo[element].name.toUpperCase();
   })
 }
+
