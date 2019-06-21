@@ -39,8 +39,19 @@ function redirectToHome(){
 function renderHome() {
   renderCharactersContainers();
   getHomeCharacters();
+  setActiveLink('home-link');
   addEventListenersHome();
 }
+
+function setActiveLink(link) {
+  let linksUl = getById('nav-links');
+  for(let i = 0; i < linksUl.childElementCount; i++){
+    linksUl.children[i].classList.remove("active")
+  }
+  if(link != 'none')
+    getById(link).classList.add('active');
+}
+
 
 function addEventListenersHome() {
   const showAllButton = document.getElementById("button-showAll");
@@ -116,6 +127,7 @@ function renderCharactersPage(){
   setUpPaginator();
   charactersContainerPage.classList.add("d-flex");
   charactersContainerPage.classList.add("flex-wrap");
+  setActiveLink('characters-link');
   addEventListenersCharacters(); 
 }
 
@@ -251,6 +263,7 @@ function redirectToDetail(e) {
 }
 
 async function renderDetail() {
+  setActiveLink('none');
   const characterIdtoShowDetail = await parseInt(sessionStorage.getItem('idToShowDetail'));
   let charactersList = await JSON.parse(sessionStorage.getItem("charactersObject"));
   let characterToRender = charactersList.filter( character => character.id == characterIdtoShowDetail);
