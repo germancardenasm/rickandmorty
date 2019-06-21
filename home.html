@@ -10,44 +10,41 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900|Roboto:400,500,700,900&display=swap" rel="stylesheet"/>
-  <script src="//unpkg.com/navigo@6"></script>
+  <script type="module" src="./js/router.js"></script>
   <link rel="stylesheet" href="./css/styles.css" />
   <link rel='shortcut icon' href='./favicon.ico'>
 </head>
 <body>
   <div class = 'main-container'>
-    <nav class="navbar navbar-expand-sm navbar-light bg-light mb-4">
-      <a class="navbar-brand" href="#">
-        <img src="./img/logoSmall.png"   class="d-inline-block align-top" alt="">
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="./home.html">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./characters.html">Personajes</a>
-          </li>
-          
-        </ul>
-      </div>
-    </nav>
+    
+    <div id="header_container"></div>
 
-    <header id='header' class="header text-center">
-      <div id='home-page-title'><h1 class="display-3">Rick and Morty</h1></div>
-      <blockquote class="blockquote px-5 mt-4  text-left">
-          <p class="mb-0">““So what if he’s the Devil, Rick? 
-            At least the Devil has a job. At least he’s active 
-            in the community.””.</p>
-          <footer class="blockquote-footer text-right">Summer</footer>
-      </blockquote>
-    </header>
-  
-    <div class='characters-home' id='home-page'>
+    <div id="page_container" class="container pageEntry" >
+        <article> Loading....</article>
     </div>
+
+    <div class="home">
+      <header id='header' class="header text-center">
+          <div id='home-page-title'><h1 class="display-3">Rick and Morty</h1></div>
+          <blockquote class="blockquote px-5 mt-4  text-left">
+              <p class="mb-0">““So what if he’s the Devil, Rick? 
+                At least the Devil has a job. At least he’s active 
+                in the community.””.</p>
+              <footer class="blockquote-footer text-right">Summer</footer>
+          </blockquote>
+        </header>
+        
+      <div class='characters-home' id='home-page'>
+      </div>
+
+      <section id='showAllSection' class='show-all-section'>
+          <div class="px-3 py-4 mx-auto d-flex justify-content-around align-content-end flex-wrap"> 
+            <p class="lead align-middle">Just click the button to see the rest of the family.</p>
+            <a id='button-showAll' class="btn btn-primary btn-lg" href="./characters.html" role="button">See All</a>
+          </div>
+        </section>
+    </div>
+   
 
     <div class="characters-page d-none" id='characters-page'>
         <div id='characters-page-title' class='page-title line-down'><h3 class='display-5'>Characters</h3>
@@ -80,16 +77,6 @@
           </div>
         </div>
     </div>
-
-
-    <section id='showAllSection' class='show-all-section'>
-      <div class="px-3 py-4 mx-auto d-flex justify-content-around align-content-end flex-wrap"> 
-        <p class="lead align-middle">Just click the button to see the rest of the family.</p>
-        <a id='button-showAll' class="btn btn-primary btn-lg" href="./characters.html" role="button">See All</a>
-      </div>
-    </section>
-
-   
 
   </div>
 
