@@ -4,57 +4,55 @@ let nextPage = "";
 let prevPage = "";
 let activePaginatorPage = 1;
 let previosActivePaginatorPage = 1;
-const showAllSection = document.getElementById("showAllSection");
+const showAllSection = getById("showAllSection");
 
-const homePage = document.getElementById("home-page");
-const characters = document.getElementById("characterPage");
+const homePage = getById("home-page");
+const characters = getById("characterPage");
 
-const charactersPageTitle = document.getElementById("characters-page-title");
-const pagination = document.getElementById("pagination");
-const next = document.getElementById("previous");
-const previous = document.getElementById("next");
+const charactersPageTitle = getById("characters-page-title");
+const pagination = getById("pagination");
+const next = getById("previous");
+const previous = getById("next");
 
 initStorage();
 
-function initStorage(){
-  if(storageIsInit()) return
-  getCharacter(charactersUrl).then((receivedData)=>{
-    const apiConf={
-      TOTAL_CHARACTERS:receivedData.info.count,
+function initStorage() {
+  if (storageIsInit()) return;
+  getCharacter(charactersUrl).then(receivedData => {
+    const apiConf = {
+      TOTAL_CHARACTERS: receivedData.info.count,
       TOTAL_PAGES: receivedData.info.pages
-    }
-    sessionStorage.setItem('apiConf', JSON.stringify(apiConf));
-  })
+    };
+    sessionStorage.setItem("apiConf", JSON.stringify(apiConf));
+  });
 }
 
-function storageIsInit(){
-  return sessionStorage.getItem('apiConf')
+function storageIsInit() {
+  return sessionStorage.getItem("apiConf");
 }
 
-function redirectToHome(){
-  location.hash = '/home';
-  console.log('redirects to home');
+function redirectToHome() {
+  location.hash = "/home";
+  console.log("redirects to home");
 }
 
 function renderHome() {
   renderCharactersContainers();
   getHomeCharacters();
-  setActiveLink('home-link');
+  setActiveLink("home-link");
   addEventListenersHome();
 }
 
 function setActiveLink(link) {
-  let linksUl = getById('nav-links');
-  for(let i = 0; i < linksUl.childElementCount; i++){
-    linksUl.children[i].classList.remove("active")
+  let linksUl = getById("nav-links");
+  for (let i = 0; i < linksUl.childElementCount; i++) {
+    linksUl.children[i].classList.remove("active");
   }
-  if(link != 'none')
-    getById(link).classList.add('active');
+  if (link != "none") getById(link).classList.add("active");
 }
 
-
 function addEventListenersHome() {
-  const showAllButton = document.getElementById("button-showAll");
+  const showAllButton = getById("button-showAll");
   showAllButton.addEventListener("click", showAllCharacters);
 }
 
@@ -62,8 +60,10 @@ function renderCharactersContainers(
   qtyOfCharacters = QTY_HOME_CHARACTERS,
   sectionContainer = "home-page"
 ) {
+  const container = getById(sectionContainer);
+  container.addEventListener("click", redirectToDetail);
   for (let i = 0; i < qtyOfCharacters; i++) {
-    const page = document.getElementById(sectionContainer);
+    const page = getById(sectionContainer);
     const container = document.createElement("div");
     container.setAttribute("id", i);
     container.classList.add("character-container");
@@ -77,7 +77,6 @@ function renderCharactersContainers(
     name.classList.add("character-name");
     nameContainer.appendChild(name);
     container.append(nameContainer);
-    container.addEventListener("click", redirectToDetail);
     page.appendChild(container);
   }
 }
@@ -115,35 +114,26 @@ function getCharacter(url, characterId = "") {
 }
 
 function showAllCharacters(event) {
-  if(!storageIsInit) initStorage()
-  location.hash = '/characters';
+  if (!storageIsInit) initStorage();
+  location.hash = "/characters";
 }
 
-function renderCharactersPage(){
+function renderCharactersPage() {
   const charactersContainerPage = getById("characters-container-page");
-  const requestCharactersList = getCharacter(charactersUrl, `?page=${activePaginatorPage}`);
+  const requestCharactersList = getCharacter(
+    charactersUrl,
+    `?page=${activePaginatorPage}`
+  );
   renderCharactersContainers(20, "characters-container-page");
   renderPageWhendataAvailable(requestCharactersList);
   setUpPaginator();
   charactersContainerPage.classList.add("d-flex");
   charactersContainerPage.classList.add("flex-wrap");
-  setActiveLink('characters-link');
-  addEventListenersCharacters(); 
-}
-
-function addEventListenersCharacters() {
-  const nextButton = getById('next');
-  const previousButton = getById('previous');
-  nextButton.addEventListener("click", changePage);
-  previousButton.addEventListener("click", changePage);
-}
-
-function getById(id){
-  return document.getElementById(id);
+  setActiveLink("characters-link");
 }
 
 function removeAllCharacters(section = "home-page") {
-  var myNode = document.getElementById(section);
+  var myNode = getById(section);
   while (myNode.firstChild) {
     myNode.removeChild(myNode.firstChild);
   }
@@ -152,9 +142,10 @@ function removeAllCharacters(section = "home-page") {
 function setUpPaginator() {
   const PREVIUOS_BUTTON = 1;
   let paginatorList = getById("paginator-list");
-  let numOfPages = sessionStorage.getItem('apiConf');
+  paginatorList.addEventListener("click", changePage);
+  let numOfPages = sessionStorage.getItem("apiConf");
   numOfPages = JSON.parse(numOfPages).TOTAL_PAGES;
- 
+
   for (let i = 1; i <= numOfPages; i++) {
     addPaginatorPageButton(i, paginatorList);
   }
@@ -167,16 +158,18 @@ function addPaginatorPageButton(i, paginatorList) {
   let li = document.createElement("li");
   let anchor = document.createElement("a");
   li.classList.add("page-item");
+  li.setAttribute("id", "page-" + i);
   anchor.classList.add("page-link");
   anchor.classList.add("page-link-num");
   anchor.innerHTML = i;
   li.appendChild(anchor);
-  li.addEventListener("click", changePage);
+
   paginatorList.appendChild(li);
 }
 
 function changePage(e) {
   e.preventDefault();
+  if (!e.target.classList.contains("page-link")) return;
   const buttonPressed = e.target.innerHTML;
   let apiInfo = {};
 
@@ -207,7 +200,7 @@ function renderPageWhendataAvailable(
   promise,
   section = "characters-container-page"
 ) {
-  const container = document.getElementById(section);
+  const container = getById(section);
   promise.then(receivedData => {
     const qtyOfCharactersReceived = receivedData.results.length;
     const qtyCharacterOnScreen = container.childElementCount;
@@ -223,21 +216,21 @@ function renderPageWhendataAvailable(
     renderCharacters(receivedData.results, section);
     window.scrollTo(0, 0);
     saveCharacters(receivedData.results);
-    });
+  });
 }
 
-function saveApiConfiguration(receivedData){
-  if(receivedData.info === undefined) return;
-  const apiConf={
-    TOTAL_CHARACTERS:receivedData.info.count,
+function saveApiConfiguration(receivedData) {
+  if (receivedData.info === undefined) return;
+  const apiConf = {
+    TOTAL_CHARACTERS: receivedData.info.count,
     TOTAL_PAGES: receivedData.info.pages
-  }
-  sessionStorage.setItem('apiConf', JSON.stringify(apiConf));
+  };
+  sessionStorage.setItem("apiConf", JSON.stringify(apiConf));
 }
 
 function renderCharacters(charactersArray, sectionContainer = "home-page") {
   charactersArray.forEach((element, index) => {
-    const container = document.getElementById(sectionContainer).children[index];
+    const container = getById(sectionContainer).children[index];
     container.setAttribute("id", element.id);
     container.children[0].src = element.image;
     container.children[0].alt = element.name + " image";
@@ -246,7 +239,7 @@ function renderCharacters(charactersArray, sectionContainer = "home-page") {
 }
 
 function setPaginatorActiveButton() {
-  let paginatorList = document.getElementById("paginator-list");
+  let paginatorList = getById("paginator-list");
   let li = paginatorList.getElementsByTagName("li");
   li[previosActivePaginatorPage].classList.remove("active");
   li[activePaginatorPage].classList.add("active");
@@ -257,35 +250,46 @@ function saveCharacters(serverInfo = {}) {
 }
 
 function redirectToDetail(e) {
+  if (!e.target.parentElement.classList.contains("character-container")) return;
+
   const characterIdtoShowDetail = parseInt(e.target.parentElement.id);
-  sessionStorage.setItem('idToShowDetail', characterIdtoShowDetail)
-  location.hash = '/detail';
+  sessionStorage.setItem("idToShowDetail", characterIdtoShowDetail);
+  location.hash = "/detail";
 }
 
 async function renderDetail() {
-  setActiveLink('none');
-  const characterIdtoShowDetail = await parseInt(sessionStorage.getItem('idToShowDetail'));
-  let charactersList = await JSON.parse(sessionStorage.getItem("charactersObject"));
-  let characterToRender = charactersList.filter( character => character.id == characterIdtoShowDetail);
-  renderCharacters(characterToRender, 'detail-container-page');
+  setActiveLink("none");
+  const characterIdtoShowDetail = await parseInt(
+    sessionStorage.getItem("idToShowDetail")
+  );
+  let charactersList = await JSON.parse(
+    sessionStorage.getItem("charactersObject")
+  );
+  let characterToRender = charactersList.filter(
+    character => character.id == characterIdtoShowDetail
+  );
+  renderCharacters(characterToRender, "detail-container-page");
   renderCharacterDetail(characterToRender[0]);
 }
 
-function renderCharacterDetail(characterInfo){
-  const table = document.getElementById('character-info-table');
-  const labels = ['status', 'species', 'gender', 'origin'];
-  const characterName = document.getElementById('character-name-detail');
+function renderCharacterDetail(characterInfo) {
+  const table = getById("character-info-table");
+  const labels = ["status", "species", "gender", "origin"];
+  const characterName = getById("character-name-detail");
   characterName.innerHTML = characterInfo.name;
-  labels.forEach((element, index)=>{
+  labels.forEach((element, index) => {
     let row = table.insertRow(index);
     let cellLabel = row.insertCell(0);
-    cellLabel.classList.add('table-label');
+    cellLabel.classList.add("table-label");
     let cellCharacterInfo = row.insertCell(1);
-    cellLabel.innerHTML = element.toUpperCase()+' :';
-    if(element!='origin')
+    cellLabel.innerHTML = element.toUpperCase() + " :";
+    if (element != "origin")
       cellCharacterInfo.innerHTML = characterInfo[element].toUpperCase();
-      else
+    else
       cellCharacterInfo.innerHTML = characterInfo[element].name.toUpperCase();
-  })
+  });
 }
 
+function getById(id) {
+  return document.getElementById(id);
+}
