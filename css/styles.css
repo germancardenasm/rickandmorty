@@ -21,6 +21,8 @@ body{
 .navbar .navbar-brand img{
   width: 85px;
 }
+
+
 nav ul li{
   list-style: none;
   text-indent: 0;
@@ -70,6 +72,11 @@ nav ul li{
   background: radial-gradient(ellipse at left, rgba(197, 202, 213, 0.7) 0%, rgba(255, 255, 255, 0) 70%);
 }
 
+.characters-page{
+  max-width: 800px;
+  margin: 3rem auto;
+} 
+
 .characters-home{
   display: flex;
   flex-wrap: wrap;
@@ -106,11 +113,6 @@ nav ul li{
   font-weight: 800;
   color: black;
 }
-
-.characters-page{
-  max-width: 800px;
-  margin: 3rem auto;
-} 
 
 .detail-page{
   margin-top: 3rem;
@@ -158,7 +160,7 @@ nav ul li{
   padding-left: 0.25rem;
 }
 
-.detail-page .detail-container-page.character-name-detail{
+.detail-page .detail-container-page .character-name-detail{
   color: white;
   font-size: 1.1rem;
   text-transform: uppercase;

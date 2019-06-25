@@ -3,8 +3,7 @@ import rootView           from '../views/pages/rootView.js'
 import homeView           from '../views/pages/homeView.js'
 import charactersView     from '../views/pages/charactersView.js'
 import detailView         from '../views/pages/detailView.js'
-import Utils              from './Utils.js'
-import                         './mixins.js'
+import {parseRequestURL}  from './mixins.js'
 
 const routes = {
       '/'           : rootView
@@ -22,7 +21,7 @@ const router = async (e) => {
     header.innerHTML = await navBar.render();
     await navBar.after_render();
 
-    let parsedURL = Utils.parseRequestURL()
+    let parsedURL = parseRequestURL()
     
     // Get the page from the supported routes.
     // If the  URL is not in our list select the home page instead

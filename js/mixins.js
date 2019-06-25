@@ -1,32 +1,33 @@
+import config from './config.js'
 
-const API_URL = "https://rickandmortyapi.com/api/character/"
+const API_URL = config.API_URL;
 
 const initStorage = () => {
-  
-  return new Promise( (resolve, reject) =>{
-
-    if (storageIsInit()) return  resolve();
+  return new Promise((resolve, reject) => {
+    if (storageIsInit()) return resolve();
 
     getCharacter(API_URL).then(receivedData => {
-    const apiConf = {
-      QTY_HOME_CHARACTERS: 3,
-      TOTAL_CHARACTERS: receivedData.info.count,
-      TOTAL_PAGES: receivedData.info.pages,
-      charactersUrl: API_URL,
-      nextPage: receivedData.info.next,
-      prevPage:  receivedData.info.prev,
-    };
-    const paginatorConfig ={
-      activePaginatorPage: 1,
-      previosActivePaginatorPage: 1,
-    }
-    sessionStorage.setItem("apiConf", JSON.stringify(apiConf));
-    sessionStorage.setItem("paginatorConfig", JSON.stringify(paginatorConfig));
-    resolve();
-  });  
-  })
-  
-}
+      const apiConf = {
+        QTY_HOME_CHARACTERS: 3,
+        TOTAL_CHARACTERS: receivedData.info.count,
+        TOTAL_PAGES: receivedData.info.pages,
+        charactersUrl: API_URL,
+        nextPage: receivedData.info.next,
+        prevPage: receivedData.info.prev
+      };
+      const paginatorConfig = {
+        activePaginatorPage: 1,
+        previosActivePaginatorPage: 1
+      };
+      sessionStorage.setItem("apiConf", JSON.stringify(apiConf));
+      sessionStorage.setItem(
+        "paginatorConfig",
+        JSON.stringify(paginatorConfig)
+      );
+      resolve();
+    });
+  });
+};
 
 const getCharacter = (url, characterId = "") => {
   return fetch(url + characterId)
@@ -36,11 +37,9 @@ const getCharacter = (url, characterId = "") => {
     .then(function(response) {
       return response;
     });
-}
+};
 
-const renderCharactersContainers = (
-  qtyOfCharacters,
-  sectionContainer) => {
+const renderCharactersContainers = (qtyOfCharacters, sectionContainer) => {
   const container = getById(sectionContainer);
   for (let i = 0; i < qtyOfCharacters; i++) {
     const page = getById(sectionContainer);
@@ -59,27 +58,27 @@ const renderCharactersContainers = (
     container.append(nameContainer);
     page.appendChild(container);
   }
-}
+};
 
-const getById = (id) => {
+const getById = id => {
   return document.getElementById(id);
-}
+};
 
-const saveCharacters = (serverInfo = {})  => {
+const saveCharacters = (serverInfo = {}) => {
   sessionStorage.setItem("charactersObject", JSON.stringify(serverInfo));
-}
+};
 
-const saveConfig = (receivedData) =>{
+const saveConfig = receivedData => {
   const apiConf = {
     QTY_HOME_CHARACTERS: 3,
     TOTAL_CHARACTERS: receivedData.count,
     TOTAL_PAGES: receivedData.pages,
     charactersUrl: API_URL,
     nextPage: receivedData.next,
-    prevPage:  receivedData.prev,
+    prevPage: receivedData.prev
   };
-  sessionStorage.setItem('apiConf', JSON.stringify(apiConf));
-}
+  sessionStorage.setItem("apiConf", JSON.stringify(apiConf));
+};
 
 const renderPageWhendataAvailable = (
   promise,
@@ -96,17 +95,16 @@ const renderPageWhendataAvailable = (
     renderCharacters(receivedData.results, section);
     window.scrollTo(0, 0);
     saveCharacters(receivedData.results);
-    if(receivedData.info)
-      saveConfig(receivedData.info);
+    if (receivedData.info) saveConfig(receivedData.info);
   });
-}
+};
 
 const removeAllCharacters = (section = "home-page") => {
   var myNode = getById(section);
   while (myNode.firstChild) {
     myNode.removeChild(myNode.firstChild);
   }
-}
+};
 
 const renderCharacters = (charactersArray, sectionContainer = "home-page") => {
   charactersArray.forEach((element, index) => {
@@ -116,22 +114,42 @@ const renderCharacters = (charactersArray, sectionContainer = "home-page") => {
     container.children[0].alt = element.name + " image";
     container.children[1].innerHTML = element.name;
   });
-}
+};
 
-const setActiveLink = (link) => {
+const setActiveLink = link => {
   let linksUl = getById("nav-links");
   for (let i = 0; i < linksUl.childElementCount; i++) {
     linksUl.children[i].classList.remove("active");
   }
   if (link != "none") getById(link).classList.add("active");
-}
+};
 
-const getStorageItems = (data) => {
+const getStorageItems = data => {
   return JSON.parse(sessionStorage.getItem(data));
-}
+};
 
 const storageIsInit = () => {
   return getStorageItems("apiConf");
-}
+};
 
-export {renderCharactersContainers, getById, getCharacter, renderPageWhendataAvailable, setActiveLink, renderCharacters, getStorageItems, storageIsInit, initStorage};
+const parseRequestURL = () => {
+  let url =
+    location.hash
+      .slice(1)
+      .toLowerCase()
+      .toLowerCase() || "/";
+  return url;
+};
+
+export {
+  renderCharactersContainers,
+  getById,
+  getCharacter,
+  renderPageWhendataAvailable,
+  setActiveLink,
+  renderCharacters,
+  getStorageItems,
+  storageIsInit,
+  initStorage,
+  parseRequestURL
+};
