@@ -1,3 +1,5 @@
+import {renderHome} from '../../js/home.js'
+
 const home = {
     render : async () => {
       let view =  `
@@ -26,9 +28,7 @@ const home = {
       return view
     },
     after_render: async () => {
-      
           renderHome();
-         
       }
 }
 

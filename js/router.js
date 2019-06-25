@@ -4,6 +4,7 @@ import homeView           from '../views/pages/homeView.js'
 import charactersView     from '../views/pages/charactersView.js'
 import detailView         from '../views/pages/detailView.js'
 import Utils              from './Utils.js'
+import                         './mixins.js'
 
 const routes = {
       '/'           : rootView

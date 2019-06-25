@@ -1,3 +1,6 @@
+
+import {renderDetail} from '../../js/detail.js'
+
 const detail = {
 
       render : async () => {

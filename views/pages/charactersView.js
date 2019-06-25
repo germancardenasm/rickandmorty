@@ -1,6 +1,7 @@
 
-const characters = {
+import {renderCharactersPage} from '../../js/characters.js'
 
+const characters = {
     render : async () => {
       let view =  `
           <div class="characters-page" id='characters-page'>
@@ -19,9 +20,7 @@ const characters = {
       return view
     },
     after_render: async () => {
-      
           renderCharactersPage();
-         
       }
 }
 

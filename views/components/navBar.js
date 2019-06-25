@@ -25,7 +25,7 @@ const navBar = {
       return view
     },
     after_render: async () => {
-          console.log('navbar!')
+
       }
 
 }

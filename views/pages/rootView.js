@@ -1,3 +1,4 @@
+import {redirectToHome} from '../../js/home.js'
 const rootView = {
   render : async () => {
     let view =  `
