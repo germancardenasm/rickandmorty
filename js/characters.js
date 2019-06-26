@@ -9,7 +9,10 @@ const redirectToCharacters = (event) => {
 }
 
 async function renderCharactersPage() {
-  let a = await initStorage();
+  if(!storageIsInit()) 
+  {
+    let a = await initStorage();
+  }
   apiConf = await getStorageItems('apiConf');
   paginatorConfig = await getStorageItems('paginatorConfig');
   const charactersContainerPage = getById("characters-container-page");
@@ -52,6 +55,7 @@ const addPaginatorPageButton = (i, paginatorList) => {
 
 const changePage = (e) => {
   e.preventDefault();
+  imagePlaceHolder();
   if (!e.target.classList.contains("page-link")) return;
   const buttonPressed = e.target.innerHTML;
   let dataReceived = {};
@@ -80,7 +84,19 @@ const changePage = (e) => {
   renderPageWhendataAvailable(dataReceived);
   sessionStorage.setItem('paginatorConfig', JSON.stringify(paginatorConfig));
   setPaginatorActiveButton();
+}
 
+const imagePlaceHolder = ()=> {
+
+  const charactersOnScreen = getStorageItems('charactersObject');
+  const pageContainer = getById('characters-container-page');
+  charactersOnScreen.forEach((element, index) => {
+    const imgContainer = pageContainer.children[index];
+    imgContainer.children[0].src = './img/dummyImg.png';
+    imgContainer.children[0].alt = "dummy image";
+    imgContainer.children[1].innerHTML = "";
+  });
+    
 }
 
 const setPaginatorActiveButton = () => {

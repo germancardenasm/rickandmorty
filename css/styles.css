@@ -96,6 +96,8 @@ nav ul li{
   margin:1rem;
   width: 100%;
   max-width: 135px;
+  min-height: 135px;
+  cursor: pointer;
 }
 .character-container img{
   max-width: 100%;
@@ -115,7 +117,7 @@ nav ul li{
 }
 
 .detail-page{
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 .detail-page .character-container{
@@ -124,7 +126,7 @@ nav ul li{
 
 .detail-page .detail-container-page{
   position: relative;
-  margin: 2rem auto;
+  margin: 1rem auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -143,7 +145,7 @@ nav ul li{
 
 .detail-page .detail-container-page .table{
   padding-top: 1rem;
-  width: 200px;
+  width: 220px;
   color: white; 
 }
 

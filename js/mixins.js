@@ -4,8 +4,7 @@ const API_URL = config.API_URL;
 
 const initStorage = () => {
   return new Promise((resolve, reject) => {
-    if (storageIsInit()) return resolve();
-
+    
     getCharacter(API_URL).then(receivedData => {
       const apiConf = {
         QTY_HOME_CHARACTERS: 3,
@@ -107,12 +106,13 @@ const removeAllCharacters = (section = "home-page") => {
 };
 
 const renderCharacters = (charactersArray, sectionContainer = "home-page") => {
+  const pageContainer = getById(sectionContainer);
   charactersArray.forEach((element, index) => {
-    const container = getById(sectionContainer).children[index];
-    container.setAttribute("id", element.id);
-    container.children[0].src = element.image;
-    container.children[0].alt = element.name + " image";
-    container.children[1].innerHTML = element.name;
+    const imgContainer = pageContainer.children[index];
+    imgContainer.setAttribute("id", element.id);
+    imgContainer.children[0].src = element.image;
+    imgContainer.children[0].alt = element.name + " image";
+    imgContainer.children[1].innerHTML = element.name;
   });
 };
 
@@ -151,5 +151,6 @@ export {
   getStorageItems,
   storageIsInit,
   initStorage,
-  parseRequestURL
+  parseRequestURL,
+  removeAllCharacters
 };
