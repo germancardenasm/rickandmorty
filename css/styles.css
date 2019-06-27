@@ -18,10 +18,9 @@ body{
 .navbar{
   font-size: 1rem;
 }
-.navbar .navbar-brand img{
-  width: 85px;
+.navbar .navbar-brand{
+  width: 150px;
 }
-
 
 nav ul li{
   list-style: none;
@@ -99,7 +98,7 @@ nav ul li{
   min-height: 135px;
   cursor: pointer;
 }
-.character-container img{
+.character-container .img{
   max-width: 100%;
 }
 .character-container .name-container{

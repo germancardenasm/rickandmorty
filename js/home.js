@@ -1,3 +1,5 @@
+//@ts-check
+
 import {
   renderCharactersContainers,
   getById,
@@ -20,8 +22,7 @@ async function renderHome() {
   renderCharactersContainers(3, "home-page");
   let a = await initStorage();
   let qtyOfCharacters = getStorageItems("apiConf").QTY_HOME_CHARACTERS;
-  if(DEFAULT_QTY != qtyOfCharacters)
-  {
+  if (DEFAULT_QTY != qtyOfCharacters) {
     removeAllCharacters("home-page");
     renderCharactersContainers(qtyOfCharacters, "home-page");
   }

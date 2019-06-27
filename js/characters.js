@@ -90,6 +90,7 @@ const imagePlaceHolder = ()=> {
 
   const charactersOnScreen = getStorageItems('charactersObject');
   const pageContainer = getById('characters-container-page');
+
   charactersOnScreen.forEach((element, index) => {
     const imgContainer = pageContainer.children[index];
     imgContainer.children[0].src = './img/dummyImg.png';
